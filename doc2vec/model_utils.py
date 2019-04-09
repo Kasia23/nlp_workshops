@@ -11,7 +11,7 @@ def model_cnn(params, doc2vec=False):
     maxpool_pool = []
     for i in range(len(params["filter_sizes"])):
         conv = Conv1D(params['num_filters'], kernel_size=params["filter_sizes"][i],
-                      kernel_initializer='he_normal', activation='relu')(x)
+                      kernel_initializer='he_normal', activation='relu', padding='same')(x)
         maxpool_pool.append(MaxPooling1D(pool_size=params['word_emb_size'], strides=None, padding="valid")(conv))
     # TODO: gdzieś dodać doc2vecowe rzeczy
     x = Concatenate(axis=1)(maxpool_pool)
