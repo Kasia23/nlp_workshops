@@ -1,2 +1,6 @@
 .idea/
 venv/
+*.pickle
+*.tab
+*__pycache__/
+*.ipynb_checkpoints
