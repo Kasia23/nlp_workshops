@@ -2,6 +2,7 @@ GENSIM_MODEL_PATH = "doc2vec/models/my_doc2vec_model.pickle"
 TRAIN_PATH = "data/train_offers.pickle"
 TEST_PATH = "data/test_offers.pickle"
 SGJP_PATH = "data/sgjp-20180304.tab"
+TOKENIZER_PATH = 'data/tokenizer.pickle'
 
 PUNC_CHARS = '„”–'
 

@@ -25,19 +25,17 @@ def lemmatize_word_list(word_list, form_lemma_dict, unk_out):
         return [form_lemma_dict.get(x, x).lower() for x in word_list]
 
 
-def prepare_representation(content_frame, rep, tokenizer_path=None, oov_token=None):
-    if rep == 'tokens':
-        tokenizer = Tokenizer(oov_token=oov_token)
-        texts = content_frame.str.join(' ')
-        tokenizer.fit_on_texts(texts)
-        with open(tokenizer_path, 'wb') as handle:
-            pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        return pd.DataFrame(pd.Series(tokenizer.texts_to_sequences(texts), index=content_frame.index))
+def tokenize_texts(content_frame, tokenizer_path=None, oov_token=None):
+    tokenizer = Tokenizer(oov_token=oov_token)
+    texts = content_frame.str.join(' ')
+    tokenizer.fit_on_texts(texts)
+    with open(tokenizer_path, 'wb') as handle:
+        pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    return tokenizer, tokenizer.texts_to_sequences(texts)
 
 
 def clear_offers(data, text_col, stopwords_list=None, lemmatize_dict=None, remove_punct=''):
     # Clearing data
-    data.dropna(inplace=True, subset=[text_col])  # drop data where we don't have text
     seq = data[text_col].apply(text_to_word_sequence)
     seq = seq.apply(lambda x: [item.strip(remove_punct) if isinstance(item, str) else item for item in x])
     print(datetime.datetime.now(), ' Clearing data - DONE')
