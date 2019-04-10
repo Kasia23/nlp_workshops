@@ -31,7 +31,7 @@ def prepare_representation(content_frame, oov_token=None):
     return tokenizer, pd.DataFrame(pd.Series(tokenizer.texts_to_sequences(texts), index=content_frame.index))
 
 
-def clear_offers(text, strip_chars, is_remove_stopwords=True, is_lemmatize=True):
+def clear_text(text, strip_chars, is_remove_stopwords=True, is_lemmatize=True):
     # czyszczenie danych
     seq = text.apply(text_to_word_sequence)
     seq = seq.apply(
