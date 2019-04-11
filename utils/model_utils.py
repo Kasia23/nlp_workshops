@@ -1,8 +1,5 @@
-import pickle
 import codecs
 import pandas as pd
-from tqdm import tqdm
-from keras.callbacks import *
 from keras.layers import *
 from keras.optimizers import Adam, Adadelta
 from keras.models import Model
@@ -20,17 +17,6 @@ def conf_matrix(y_test, y_pred):
     cm.index.name, cm.columns.name = 'Actual', 'Predicted'
     return cm
 
-
-def calculate_preds_binary(preds):
-    preds_binary = []
-    for x in list(preds):
-        if x < 0.5:
-            preds_binary.append(0)
-        else:
-            preds_binary.append(1)
-    return preds_binary
-
-
 def one_or_zero(number, k):
     return 1 if number >= k else 0
 
@@ -39,7 +25,7 @@ def load_embeddings(emb_path, nrows=None):
     # load embeddings
     embeddings_index = {}
     f = codecs.open(emb_path, encoding='utf-8')
-    for i, line in enumerate(tqdm(f)):
+    for i, line in enumerate(f):
         if (nrows is not None) and i > nrows:
             break
         values = line.rstrip().rsplit(' ')
@@ -76,7 +62,7 @@ def build_model_blstm(params, emb_weights):
     lstm_units = params['lstm_units']
     nb_tokens = params['nb_tokens']
     maxlen = params['maxlen']
-    offer_rep_dim = params['offer_rep_dim']
+    text_rep_dim = params['text_rep_dim']
     emb_len = params['emb_len']
     distance = params['distance']
     is_trainable = params['is_trainable']
@@ -87,7 +73,7 @@ def build_model_blstm(params, emb_weights):
     emb_layer = Embedding(nb_tokens, output_dim=emb_len, input_length=maxlen, mask_zero=False,
                           embeddings_initializer=emb_weights, trainable=is_trainable)
     blstm_layer = Bidirectional(LSTM(units=lstm_units, return_sequences=True), merge_mode='concat', weights=None)
-    dense = Dense(offer_rep_dim, activation='sigmoid')
+    dense = Dense(text_rep_dim, activation='sigmoid')
 
     blstm_encoders = []
     for char_array in [input_1, input_2]:
@@ -111,9 +97,7 @@ def build_model_blstm(params, emb_weights):
     else:
         raise ValueError
 
-    if params['loss'] == 'contrast':
-        loss = contrastive_loss
-    elif params['loss'] == 'mse':
+    if params['loss'] == 'mse':
         loss = 'mean_squared_error'
     elif params['loss'] == 'bin':
         loss = 'binary_crossentropy'

@@ -1,13 +1,7 @@
-import random
 import datetime
 import pandas as pd
-import numpy as np
-import xml.etree.ElementTree as ET
-from langdetect import detect
-from bs4 import BeautifulSoup, NavigableString
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.text import text_to_word_sequence
-from time import time
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
