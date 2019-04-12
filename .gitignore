@@ -1,6 +1,11 @@
+.idea/
+venv/
+*.pickle
+*.tab
+*__pycache__/
+*.ipynb_checkpoints
 data/*
 __pycache__/*
 .DS_Store
 *.csv
 *.h5
-*.pickle
