@@ -51,3 +51,17 @@ def clear_offers(data, text_col, stopwords_list=None, lemmatize_dict=None, remov
         print(datetime.datetime.now(), ' Lemmatizing - DONE')
 
     return seq
+
+
+def tokenize(sequence, word_index_dict):
+    """
+    :param sequence: sequence that we want tokenized
+    :param word_index_dict:
+           dictionary with keys - words from texts and values - indices that correspond to embedding matrix rows
+    :return: sequence (a list) of tokens (indeces from embedding matrix)
+    """
+    return [word_index_dict[x] for x in sequence if word_index_dict.get(x)]
+
+
+def prepare_gensim_word_index_dict(gensim_wv_vocab):
+    return {k: v.index for (k, v) in gensim_wv_vocab.items()}

@@ -4,3 +4,4 @@ venv/
 *.tab
 *__pycache__/
 *.ipynb_checkpoints
+*.h5
